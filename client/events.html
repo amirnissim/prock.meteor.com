@@ -1,0 +1,59 @@
+<head>
+    <title>פרפורמנס רוק - הרשמה לחוגים</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+<div id="toolbar">
+    {{loginButtons}}
+</div>
+<div id="logo">
+    <img src="http://www.performancerock.co.il/images/logoHead.jpg" alt="">
+
+    <h1>טיפוס ויוגה</h1>
+</div>
+{{> upcomingEvents}}
+</body>
+
+<template name="upcomingEvents">
+    <div id="events">
+        {{#each upcomingEvents}}
+        {{> eventDetails }}}
+        {{/each}}
+    </div>
+</template>
+
+<template name="eventDetails">
+    <div class="event well">
+        <div class="title">
+            <h3>{{prettyDate when}}</h3>
+            <h3>{{title}}</h3>
+            <h3 class="instructor">
+                <img src="/climbingmonster.jpg" alt="">
+                {{instructor}}
+            </h3>
+        </div>
+        <div class="details">
+            {{#if attendanceList}}
+            <strong>מי מגיע:</strong>
+            <ul class="attendance-list">
+                {{#each attendanceList}}
+                <li>{{name}}</li>
+                <!--<img src="{{img}}" alt="">-->
+                {{/each}}
+            </ul>
+
+            {{else}}
+            <strong>אף אחד לא נרשם עדיין</strong>
+            {{/if}}
+        </div>
+        <div class="actions">
+            {{#if amGoing}}
+            <input type="button" class="btn btn-warning cancel" value="ביטול הרשמה">
+            {{else}}
+            <input type="button" class="btn btn-success rsvp" value="הרשם">
+            {{/if}}
+        </div>
+    </div>
+</template>
+
