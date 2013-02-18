@@ -18,7 +18,10 @@ Meteor.startup(function () {
 
         var daily_schedule = EVENT_SCHEDULE[event_day.day()];
         _.each(daily_schedule, function (entry) {
-            var event_date = moment(event_day.toArray().slice(0, 3).concat(entry.time)).toDate();
+            var event_date = moment(event_day.toArray().slice(0, 3).concat(entry.time))
+                // FIXME - hack for Israel Timezone
+                .subtract('hours', 2)
+                .toDate();
 
             // event already exists - do nothing
             if (Events.find({'date': event_date}).count() > 0){
