@@ -4,21 +4,38 @@
 </head>
 
 <body>
-<div id="toolbar">
-    {{loginButtons}}
-</div>
-<div id="logo">
-    <img src="http://www.performancerock.co.il/images/logoHead.jpg" alt="">
 
-    <h1>טיפוס ויוגה</h1>
+<div class="container">
+    <div id="toolbar">
+        {{loginButtons}}
+    </div>
+
+    {{#unless currentUser}}
+    <div class="alert alert-error pagination-centered">
+        הכנס לחשבון כדי להרשם לחוגים
+    </div>
+    {{/unless}}
+
+    <div id="logo">
+        <img src="http://www.performancerock.co.il/images/logoHead.jpg">
+
+        <h1>טיפוס ויוגה</h1>
+        ALPHA
+    </div>
+
+    {{> upcomingEvents}}
 </div>
-{{> upcomingEvents}}
 </body>
 
 <template name="upcomingEvents">
     <div id="events">
         {{#each upcomingEvents}}
+        <div class="alert alert-success">
+            <h3>{{ title }}</h3>
+        </div>
+        {{#each event_list}}
         {{> eventDetails }}}
+        {{/each}}
         {{/each}}
     </div>
 </template>
@@ -26,23 +43,19 @@
 <template name="eventDetails">
     <div class="event well">
         <div class="title">
-            <h3>{{prettyDate when}}</h3>
-            <h3>{{title}}</h3>
-            <h3 class="instructor">
-                <img src="/climbingmonster.jpg" alt="">
-                {{instructor}}
-            </h3>
+            <h3>{{moment date 'H:mm'}} | {{title}}</h3>
         </div>
+
+        {{#if currentUser}}
         <div class="details">
             {{#if attendanceList}}
             <strong>מי מגיע:</strong>
-            <ul class="attendance-list">
+            <ol class="attendance-list">
                 {{#each attendanceList}}
                 <li>{{name}}</li>
                 <!--<img src="{{img}}" alt="">-->
                 {{/each}}
-            </ul>
-
+            </ol>
             {{else}}
             <strong>אף אחד לא נרשם עדיין</strong>
             {{/if}}
@@ -54,6 +67,7 @@
             <input type="button" class="btn btn-success rsvp" value="הרשם">
             {{/if}}
         </div>
+        {{/if}}
     </div>
 </template>
 
