@@ -5,42 +5,53 @@
 
 <body>
 
-<div class="container">
+<div id="content">
     <div id="toolbar">
+        {{#if currentUser}}
         {{loginButtons}}
-    </div>
+        {{else}}
+        <div class="alert alert-error pagination-centered">
+            הכנס לחשבון כדי להרשם לחוגים
+            {{loginButtons}}
+            <div class="clearfix"></div>
+        </div>
+        {{/if}}
 
-    {{#unless currentUser}}
-    <div class="alert alert-error pagination-centered">
-        הכנס לחשבון כדי להרשם לחוגים
     </div>
-    {{/unless}}
 
     <div id="logo">
-        <img src="http://www.performancerock.co.il/images/logoHead.jpg">
-
-        <h1>טיפוס ויוגה</h1>
-        ALPHA
-
-        <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2FPerformanceRock.ClimbingGym&amp;width=358&amp;height=395&amp;show_faces=false&amp;colorscheme=light&amp;stream=true&amp;border_color&amp;header=false&amp;appId=154631364550681" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:358px; height:395px;" allowTransparency="true"></iframe>
-
+        <a href="http://performancerock.co.il"><img src="http://www.performancerock.co.il/images/logoHead.jpg"></a>
+        <h1>הרשמה לחוגים</h1>
     </div>
 
-    {{> upcomingEvents}}
+    <div id="events">
+        {{> upcomingEvents}}
+    </div>
 </div>
+
+<div id="slogan" class="pagination-centered">
+    <h4>fuck work. GO CLIMBING</h4>
+</div>
+
+<div id="footer" class="pagination-centered muted">
+    <div>Made with <i class="icon-heart"></i> by Amir Nissim</div>
+    <div>Built with <a href="http://meteor.com">Meteor JS</a></div>
+    <div>ALPHA version</div>
+</div>
+
 </body>
 
 <template name="upcomingEvents">
-    <div id="events">
-        {{#each upcomingEvents}}
-        <div class="alert alert-success">
+    {{#each upcomingEvents}}
+    <div class="events-of-day">
+        <div class="header alert alert-success">
             <h3>{{ title }}</h3>
         </div>
         {{#each event_list}}
         {{> eventDetails }}}
         {{/each}}
-        {{/each}}
     </div>
+    {{/each}}
 </template>
 
 <template name="eventDetails">
@@ -56,7 +67,6 @@
             <ol class="attendance-list">
                 {{#each attendanceList}}
                 <li>{{name}}</li>
-                <!--<img src="{{img}}" alt="">-->
                 {{/each}}
             </ol>
             {{else}}
@@ -65,9 +75,9 @@
         </div>
         <div class="actions">
             {{#if amGoing}}
-            <input type="button" class="btn btn-info cancel" value="ביטול הרשמה">
+            <input type="button" class="btn btn-inverse cancel" value="ביטול הרשמה">
             {{else}}
-            <input type="button" class="btn btn-info rsvp" value="הרשם">
+            <input type="button" class="btn btn-primary rsvp" value="הרשם">
             {{/if}}
         </div>
         {{/if}}
