@@ -38,6 +38,11 @@ Template.eventDetails.attendanceList = function(){
         };
     })
 };
+Template.eventDetails.helpers({
+    moment: function(date, format) {
+        return moment(date).format(format);
+    }
+});
 Template.eventDetails.events({
     'click .rsvp': function(){
         Meteor.call("rsvp", this._id, function(error, result){
@@ -83,10 +88,3 @@ function getTitle(date){
 
     return title;
 }
-
-///////////////////////////////////////////////////////////////////////////////
-// Handlebars
-
-Handlebars.registerHelper('moment', function(date, format) {
-    return moment(date).format(format);
-});
