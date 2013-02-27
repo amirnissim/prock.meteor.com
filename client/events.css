@@ -22,6 +22,17 @@ body{
     margin-bottom: 50px;
 }
 
+#likebox{
+    text-align: center;
+    max-width: 300px;
+    margin: 50px auto;
+}
+
+/* responsive likebox */
+#likebox * {
+    width: 100% !important;
+}
+
 #events{
     direction: rtl;
     text-align: right;
