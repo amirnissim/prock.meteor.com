@@ -19,18 +19,18 @@ var DAYS_TO_PUBLISH_EVENTS_FOR = 7,
         // Sunday
         '0': [
             { title: 'מבוגרים מתקדמים', time: [20, 0] },
-            { title: 'יוגה', time: [20, 15] }
+            { title: 'יוגה - איינגר', time: [20, 15] }
         ],
         // Monday
         '1': [
             { title: 'שיעור הכרות חד פעמי', time: [19, 15] },
             { title: 'מבוגרים מתחילים', time: [20, 0] },
-            { title: 'יוגה', time: [20, 15] }
+            { title: 'יוגה - איינגר', time: [20, 15] }
         ],
         // Tuesday
         '2': [
             { title: 'מבוגרים מתחילים', time: [20, 0] },
-            { title: 'יוגה', time: [20, 15] }
+            { title: 'יוגה - איינגר', time: [20, 15] }
         ],
         // Wednesday
         '3': [
@@ -38,7 +38,7 @@ var DAYS_TO_PUBLISH_EVENTS_FOR = 7,
         ],
         // Friday
         '5': [
-            { title: 'יוגה', time: [9, 30] }
+            { title: 'יוגה - אשטנגה', time: [9, 30] }
         ]
     };
 
