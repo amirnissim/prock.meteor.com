@@ -8,31 +8,45 @@ Meteor.publish("upcomingEvents", function () {
     return Events.find({'date': {'$gt': start_date, '$lt': end_date}});
 });
 
+function dstOffset(ilDate){
+    var year = ilDate.getFullYear(),
+        dstStart = ISRAEL_DST_SCHEDULE[year][0],
+        dstEnd = ISRAEL_DST_SCHEDULE[year][1],
+        offset;
+
+    if (dstStart <= ilDate && ilDate < dstEnd){
+        offset = 3;  // DST ON
+    } else {
+        offset = 2;  // DST OFF
+    }
+
+    return offset;
+}
 
 Meteor.startup(function () {
     // create events when the server starts
 
     console.log("Creating events...\n=======");
     for (var i = 0; i <= DAYS_TO_CREATE_EVENTS_FOR; i++) {
-        var event_day = moment().add('days', i);
+        var eventDay = moment().add('days', i);
 
-        var daily_schedule = EVENT_SCHEDULE[event_day.day()];
-        _.each(daily_schedule, function (entry) {
-            var event_date = moment(event_day.toArray().slice(0, 3).concat(entry.time))
-                // FIXME - hack for Israel Timezone
-                .subtract('hours', 3)
-                .toDate();
+        var dailySchedule = EVENT_SCHEDULE[eventDay.day()];
+        _.each(dailySchedule, function (entry) {
+
+            // Schedule given in Israel time but we create dates in UTC
+            var eventDate = moment.utc(eventDay.toArray().slice(0, 3).concat(entry.time));
+            eventDate = eventDate.subtract('hours', dstOffset(eventDate.toDate())).toDate();
 
             // event already exists - do nothing
-            if (Events.find({'date': event_date}).count() > 0){
-                console.log("event exists " + entry.title + " " + event_date);
+            if (Events.find({'date': eventDate}).count() > 0){
+                console.log("event exists " + entry.title + " " + eventDate);
             }
 
             // create event
             else{
                 var event = {
                     'title': entry.title,
-                    'date': event_date,
+                    'date': eventDate,
                     'rsvps': []
                 };
                 Events.insert(event);

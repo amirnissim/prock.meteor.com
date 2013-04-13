@@ -15,6 +15,8 @@ Events = new Meteor.Collection("events");
 
 var DAYS_TO_PUBLISH_EVENTS_FOR = 7,
     DAYS_TO_CREATE_EVENTS_FOR = 7,
+
+    // Hours are in Israel Time
     EVENT_SCHEDULE = {
         // Sunday
         '0': [
@@ -40,6 +42,11 @@ var DAYS_TO_PUBLISH_EVENTS_FOR = 7,
         '5': [
             { title: 'יוגה - אשטנגה', time: [9, 30] }
         ]
+    },
+
+    ISRAEL_DST_SCHEDULE = {
+        2013: [new Date(2013, 2, 29, 2), new Date(2013, 9, 6, 2)],
+        2014: [new Date(2014, 2, 28, 2), new Date(2014, 9, 5, 2)]
     };
 
 
