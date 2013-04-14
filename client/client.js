@@ -27,7 +27,7 @@ Template.adminTools.events = {
             utc = utc.hours(hours).minutes(minutes).subtract('hours', dstOffset(utc.toDate())).toDate();
 
             var newEvent = createEvent({
-                title: 'New Event',
+                title: eventTitle,
                 date: utc
             });
             if (!newEvent){
