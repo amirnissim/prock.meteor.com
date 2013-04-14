@@ -1,31 +1,53 @@
-Meteor.publish("directory", function () {
-    return Meteor.users.find({}, {fields: {username:1, emails: 1, profile: 1}});
-});
-Meteor.publish("upcomingEvents", function () {
-    var start_date = moment().subtract("hours", 1).toDate(),
-        end_date = moment().add('days', DAYS_TO_PUBLISH_EVENTS_FOR).endOf("day").toDate();
+/*************************
+** Settings
+*************************/
+var
+    ADMIN_PASSWORD = "admin"  // MUST CHANGE PASSWORD
 
-    return Events.find({'date': {'$gt': start_date, '$lt': end_date}});
-});
+    ,DAYS_TO_PUBLISH_EVENTS_FOR = 7
+    ,DAYS_TO_CREATE_EVENTS_FOR = 7
 
-function dstOffset(ilDate){
-    var year = ilDate.getFullYear(),
-        dstStart = ISRAEL_DST_SCHEDULE[year][0],
-        dstEnd = ISRAEL_DST_SCHEDULE[year][1],
-        offset;
-
-    if (dstStart <= ilDate && ilDate < dstEnd){
-        offset = 3;  // DST ON
-    } else {
-        offset = 2;  // DST OFF
+    ,ISRAEL_DST_SCHEDULE = {
+        2013: [new Date(2013, 2, 29, 2), new Date(2013, 9, 6, 2)],
+        2014: [new Date(2014, 2, 28, 2), new Date(2014, 9, 5, 2)]
     }
 
-    return offset;
-}
+    ,EVENT_SCHEDULE = {  // Hours are in Israel Time
+        // Sunday
+        '0': [
+            { title: 'מבוגרים מתקדמים', time: [20, 0] },
+            { title: 'יוגה - איינגר', time: [20, 15] }
+        ],
+        // Monday
+        '1': [
+            { title: 'שיעור הכרות חד פעמי', time: [19, 15] },
+            { title: 'מבוגרים מתחילים', time: [20, 0] },
+            { title: 'יוגה - איינגר', time: [20, 15] }
+        ],
+        // Tuesday
+        '2': [
+            { title: 'מבוגרים מתחילים', time: [20, 0] },
+            { title: 'יוגה - איינגר', time: [20, 15] }
+        ],
+        // Wednesday
+        '3': [
+            { title: 'מבוגרים מתקדמים', time: [20, 0] }
+        ],
+        // Friday
+        '5': [
+            { title: 'יוגה - אשטנגה', time: [9, 30] }
+        ]
+    };
 
 Meteor.startup(function () {
-    // create events when the server starts
+    // create admin user
+    var admin = Meteor.users.find({username: ADMIN_USERNAME}).count();
+    if (!admin){
+        Accounts.createUser({username: ADMIN_USERNAME, password: ADMIN_PASSWORD});
+        console.log("Admin user created");
+    }
 
+    // create events when the server starts
     console.log("Creating events...\n=======");
     for (var i = 0; i <= DAYS_TO_CREATE_EVENTS_FOR; i++) {
         var eventDay = moment().add('days', i);
@@ -55,3 +77,30 @@ Meteor.startup(function () {
         });
     }
 });
+
+
+Meteor.publish("directory", function () {
+    return Meteor.users.find({}, {fields: {username:1, emails: 1, profile: 1}});
+});
+Meteor.publish("upcomingEvents", function () {
+    var start_date = moment().subtract("hours", 1).toDate(),
+        end_date = moment().add('days', DAYS_TO_PUBLISH_EVENTS_FOR).endOf("day").toDate();
+
+    return Events.find({'date': {'$gt': start_date, '$lt': end_date}});
+});
+
+
+function dstOffset(ilDate){
+    var year = ilDate.getFullYear(),
+        dstStart = ISRAEL_DST_SCHEDULE[year][0],
+        dstEnd = ISRAEL_DST_SCHEDULE[year][1],
+        offset;
+
+    if (dstStart <= ilDate && ilDate < dstEnd){
+        offset = 3;  // DST ON
+    } else {
+        offset = 2;  // DST OFF
+    }
+
+    return offset;
+}
