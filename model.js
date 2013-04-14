@@ -10,6 +10,11 @@
  */
 
 Events = new Meteor.Collection("events");
+Events.allow({
+    insert: function(){
+        return isAdmin();
+    }
+});
 
 ADMIN_USERNAME = "admin";
 
@@ -20,6 +25,52 @@ EVENT_STATUS = {
 
 ///////////////////////////////////////////////////////////////////////////////
 // Methods
+isAdmin = function(){
+    return (Meteor.user() && Meteor.user().username == ADMIN_USERNAME);
+};
+
+createEvent = function(eventOptions){
+    if (!validDate(eventOptions.date)){
+        return undefined;
+    }
+
+    var event = {
+        'title': eventOptions.title,
+        'date': eventOptions.date,
+        'rsvps': []
+    };
+    Events.insert(event);
+    console.log("created event " + event.title + " at " + event.date);
+
+    return event;
+};
+
+dstOffset = function(ilDate){
+
+    var ISRAEL_DST_SCHEDULE = {
+        2013: [new Date(2013, 2, 29, 2), new Date(2013, 9, 6, 2)],
+        2014: [new Date(2014, 2, 28, 2), new Date(2014, 9, 5, 2)]
+    };
+
+    var year = ilDate.getFullYear(),
+        dstStart = ISRAEL_DST_SCHEDULE[year][0],
+        dstEnd = ISRAEL_DST_SCHEDULE[year][1],
+        offset;
+
+    if (dstStart <= ilDate && ilDate < dstEnd){
+        offset = 3;  // DST ON
+    } else {
+        offset = 2;  // DST OFF
+    }
+
+    return offset;
+};
+
+validDate = function(d){
+    return (Object.prototype.toString.call(d) === "[object Date]" &&
+        d.toString() !== "Invalid Date");
+};
+
 
 Meteor.methods({
     rsvp: function (eventId) {

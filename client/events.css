@@ -33,6 +33,10 @@ body{
     width: 100% !important;
 }
 
+#adminTools{
+    direction: rtl;
+}
+
 #events{
     direction: rtl;
     text-align: right;

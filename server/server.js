@@ -7,11 +7,6 @@ var
     ,DAYS_TO_PUBLISH_EVENTS_FOR = 7
     ,DAYS_TO_CREATE_EVENTS_FOR = 7
 
-    ,ISRAEL_DST_SCHEDULE = {
-        2013: [new Date(2013, 2, 29, 2), new Date(2013, 9, 6, 2)],
-        2014: [new Date(2014, 2, 28, 2), new Date(2014, 9, 5, 2)]
-    }
-
     ,EVENT_SCHEDULE = {  // Hours are in Israel Time
         // Sunday
         '0': [
@@ -66,13 +61,10 @@ Meteor.startup(function () {
 
             // create event
             else{
-                var event = {
+                createEvent({
                     'title': entry.title,
-                    'date': eventDate,
-                    'rsvps': []
-                };
-                Events.insert(event);
-                console.log("created event " + event.title + " at " + event.date);
+                    'date': eventDate
+                });
             }
         });
     }
@@ -88,19 +80,3 @@ Meteor.publish("upcomingEvents", function () {
 
     return Events.find({'date': {'$gt': start_date, '$lt': end_date}});
 });
-
-
-function dstOffset(ilDate){
-    var year = ilDate.getFullYear(),
-        dstStart = ISRAEL_DST_SCHEDULE[year][0],
-        dstEnd = ISRAEL_DST_SCHEDULE[year][1],
-        offset;
-
-    if (dstStart <= ilDate && ilDate < dstEnd){
-        offset = 3;  // DST ON
-    } else {
-        offset = 2;  // DST OFF
-    }
-
-    return offset;
-}

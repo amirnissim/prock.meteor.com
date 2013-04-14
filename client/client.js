@@ -10,6 +10,35 @@ Accounts.ui.config({
 ///////////////////////////////////////////////////////////////////////////////
 // Main page
 
+Template.adminTools.canEdit = function(){
+    return isAdmin();
+};
+Template.adminTools.events = {
+    'click #createNewEvent': function(){
+        var eventDate = $("#newEventDate").val(),
+            eventTime = $("#newEventTime").val(),
+            eventTitle = $("#newEventTitle").val();
+
+        if (eventDate && eventTime && eventTitle){
+            var utc = moment.utc(eventDate),
+                hours = eventTime.split(":")[0],
+                minutes = eventTime.split(":")[1];
+
+            utc = utc.hours(hours).minutes(minutes).subtract('hours', dstOffset(utc.toDate())).toDate();
+
+            var newEvent = createEvent({
+                title: 'New Event',
+                date: utc
+            });
+            if (!newEvent){
+                alert("oops, that didn't work");
+            }
+        } else {
+            alert("Please fill in all details");
+        }
+    }
+};
+
 Template.upcomingEvents.upcomingEvents = function(){
     // group events by date
     var event_groups =  _.groupBy(Events.find().fetch(), function (event) {
@@ -39,7 +68,7 @@ Template.eventDetails.attendanceList = function(){
     })
 };
 Template.eventDetails.canEdit = function(){
-    return (Meteor.user().username == ADMIN_USERNAME);
+    return isAdmin();
 };
 Template.eventDetails.cancelled = function(){
     return this.status == EVENT_STATUS.CANCELLED;
