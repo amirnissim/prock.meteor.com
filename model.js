@@ -23,6 +23,8 @@ EVENT_STATUS = {
     CANCELLED: 'cancelled'
 };
 
+var MAX_PARTICIPANTS = 9;
+
 ///////////////////////////////////////////////////////////////////////////////
 // Methods
 isAdmin = function(){
@@ -35,9 +37,10 @@ createEvent = function(eventOptions){
     }
 
     var event = {
-        'title': eventOptions.title,
-        'date': eventOptions.date,
-        'rsvps': []
+        title: eventOptions.title,
+        date: eventOptions.date,
+        maxParticipants: eventOptions.maxParticipants || MAX_PARTICIPANTS,
+        rsvps: []
     };
     Events.insert(event);
     console.log("created event " + event.title + " at " + event.date);

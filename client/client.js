@@ -60,6 +60,9 @@ Template.upcomingEvents.upcomingEvents = function(){
 Template.eventDetails.amGoing = function(){
     return _.contains(_.pluck(this.rsvps, "user"), Meteor.userId());
 };
+Template.eventDetails.isOpen = function(){
+    return this.rsvps.length < this.maxParticipants;
+};
 Template.eventDetails.attendanceList = function(){
     return _.map(_.pluck(this.rsvps, "user"), function(userId){
         return {

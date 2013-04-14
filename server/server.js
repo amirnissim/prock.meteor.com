@@ -62,8 +62,9 @@ Meteor.startup(function () {
             // create event
             else{
                 createEvent({
-                    'title': entry.title,
-                    'date': eventDate
+                    title: entry.title,
+                    date: eventDate,
+                    maxParticipants: entry.maxParticipants
                 });
             }
         });
