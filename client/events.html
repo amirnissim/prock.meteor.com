@@ -61,13 +61,18 @@
 <template name="eventDetails">
     <div class="event well">
         <div class="title">
-            <h3>{{moment date 'H:mm'}} | {{title}}</h3>
+            <h3>
+                {{moment date 'H:mm'}} | {{title}}
+                {{#if cancelled}}
+                <span class="label label-important">מבוטל</span>
+                {{#if canEdit}}<span class="restore-event">&times;</span>{{/if}}
+                {{/if}}
+            </h3>
         </div>
-
         {{#if currentUser}}
         <div class="details">
             {{#if attendanceList}}
-            <strong>מי מגיע:</strong>
+            <strong>מי נרשם:</strong>
             <ol class="attendance-list">
                 {{#each attendanceList}}
                 <li>{{name}}</li>
@@ -77,13 +82,23 @@
             <strong>אף אחד לא נרשם עדיין</strong>
             {{/if}}
         </div>
-        <div class="actions">
-            {{#if amGoing}}
-            <input type="button" class="btn btn-inverse cancel" value="ביטול הרשמה">
+            {{#if canEdit }}
+            <div class="admin-actions">
+                {{#unless cancelled}}
+                <button type="button" class="btn btn-danger cancel-event">בטל שיעור</button>
+                {{/unless}}
+            </div>
             {{else}}
-            <input type="button" class="btn btn-primary rsvp" value="הרשם">
+            <div class="user-actions">
+                {{#unless cancelled}}
+                    {{#if amGoing}}
+                    <input type="button" class="btn btn-success cancel-rsvp" value="ביטול הרשמה">
+                    {{else}}
+                    <input type="button" class="btn btn-primary rsvp" value="הרשם">
+                    {{/if}}
+                {{/unless}}
+            </div>
             {{/if}}
-        </div>
         {{/if}}
     </div>
 </template>

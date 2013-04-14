@@ -38,28 +38,47 @@ Template.eventDetails.attendanceList = function(){
         };
     })
 };
-Template.eventDetails.helpers({
-    moment: function(date, format) {
-        return moment(date).format(format);
-    }
-});
+Template.eventDetails.canEdit = function(){
+    return (Meteor.user().username == ADMIN_USERNAME);
+};
+Template.eventDetails.cancelled = function(){
+    return this.status == EVENT_STATUS.CANCELLED;
+};
+
 Template.eventDetails.events({
     'click .rsvp': function(){
         Meteor.call("rsvp", this._id, function(error, result){
             if (error) alert(error.reason);
         });
     },
-    'click .cancel': function(){
-        Meteor.call("cancel", this._id, function(error, result){
+    'click .cancel-rsvp': function(){
+        Meteor.call("cancelRsvp", this._id, function(error, result){
+            if (error) alert(error.reason);
+        });
+    },
+    'click .cancel-event': function(){
+        Meteor.call("cancelEvent", this._id, function(error, result){
+            if (error) alert(error.reason);
+        });
+    },
+    'click .restore-event': function(){
+        Meteor.call("restoreEvent", this._id, function(error, result){
             if (error) alert(error.reason);
         });
     }
 });
 
+Template.eventDetails.helpers({
+    moment: function(date, format) {
+        return moment(date).format(format);
+    }
+});
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Functions
 
-var displayName = function (userId) {
+function displayName(userId) {
     var user = Meteor.users.findOne(userId);
     if (!user)
         return "משתמש לא מוכר";
@@ -74,7 +93,7 @@ var displayName = function (userId) {
         return user.username;
 
     return "משתמש לא מוכר";
-};
+}
 
 function getTitle(date){
     var title_format = "dddd D/M";
