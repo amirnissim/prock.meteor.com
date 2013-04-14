@@ -78,6 +78,7 @@
 
 <template name="eventDetails">
     <div class="event well">
+        <input type="hidden" value="{{_id}}">
         <div class="title">
             <h3>
                 {{moment date 'H:mm'}} | {{title}}
