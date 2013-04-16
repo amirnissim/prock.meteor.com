@@ -111,17 +111,18 @@
             <div class="user-actions">
                 {{#if amGoing}}
                 <input type="button" class="btn btn-success cancel-rsvp" value="ביטול הרשמה">
-                {{/if}}
+
+                {{else}}
 
                 {{#unless cancelled}}
-                    {{#if isOpen}}
-                        {{#unless amGoing}}
-                        <input type="button" class="btn btn-primary rsvp" value="הרשם">
-                        {{/unless}}
-                    {{else}}
-                    <strong>לא נשאר מקום :(</strong>
-                    {{/if}}
+                {{#if isOpen}}
+                <input type="button" class="btn btn-primary rsvp" value="הרשם">
+                {{else}}
+                <strong>לא נשאר מקום :(</strong>
+                {{/if}}
                 {{/unless}}
+
+                {{/if}}
             </div>
             {{/if}}
         {{/if}}
