@@ -7,6 +7,7 @@
  date: JavaScript date
  status: EVENT_STATUS.cancelled if the event was cancelled
  rsvps: Array of objects like {user: userId}
+ walkins: Array of (string) names
  */
 
 Events = new Meteor.Collection("events");
@@ -96,6 +97,15 @@ Meteor.methods({
         }
         Events.update(eventId, {$pull: {rsvps: {user: Meteor.userId()}}});
     },
+    addWalkin: function(eventId, name){
+        if (!Meteor.user().username == ADMIN_USERNAME)
+            throw new Meteor.Error(403, "You are not authorized to edit events");
+        var event = Events.findOne(eventId);
+        if (!event) {
+            throw new Meteor.Error(404, "No such event");
+        }
+        Events.update(eventId, {$addToSet: {walkins: {name: name}}});
+    },
     cancelEvent: function(eventId){
         if (!Meteor.user().username == ADMIN_USERNAME)
             throw new Meteor.Error(403, "You are not authorized to edit events");
@@ -104,7 +114,6 @@ Meteor.methods({
             throw new Meteor.Error(404, "No such event");
         }
         Events.update(eventId, {$set: {status: EVENT_STATUS.CANCELLED}});
-        console.log(Events.findOne({_id: eventId}));
     },
     restoreEvent: function(eventId){
         if (!Meteor.user().username == ADMIN_USERNAME)

@@ -57,11 +57,15 @@ Template.upcomingEvents.upcomingEvents = function(){
     // return list sorted by date
     return _.sortBy(event_groups, function(o){ return o.date; });
 };
+
 Template.eventDetails.amGoing = function(){
     return _.contains(_.pluck(this.rsvps, "user"), Meteor.userId());
 };
 Template.eventDetails.isOpen = function(){
     return this.rsvps.length < this.maxParticipants;
+};
+Template.eventDetails.attending = function(){
+    return (this.rsvps && this.rsvps.length) || (this.walkins && this.walkins.length);
 };
 Template.eventDetails.attendanceList = function(){
     return _.map(_.pluck(this.rsvps, "user"), function(userId){
@@ -78,6 +82,7 @@ Template.eventDetails.cancelled = function(){
 };
 
 Template.eventDetails.events({
+    // user actions
     'click .rsvp': function(){
         Meteor.call("rsvp", this._id, function(error, result){
             if (error) alert(error.reason);
@@ -87,6 +92,17 @@ Template.eventDetails.events({
         Meteor.call("cancelRsvp", this._id, function(error, result){
             if (error) alert(error.reason);
         });
+    },
+
+    // admin-actions
+    'click .add-walkin': function(){
+        var name = $("#walkin-name").val();
+        Meteor.call("addWalkin", this._id, name, function(error, result){
+            if (error) alert(error.reason);
+        });
+    },
+    'click .remove-walkin': function(){
+        // TODO
     },
     'click .cancel-event': function(){
         Meteor.call("cancelEvent", this._id, function(error, result){

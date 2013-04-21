@@ -51,6 +51,12 @@ body{
 .event{
     margin-bottom: 10px;
 }
+.event .action{
+    cursor: pointer;
+}
+.event .admin-actions .input-prepend{
+    margin-bottom: 0;
+}
 .event .details{
     margin: 10px 0;
 }

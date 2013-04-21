@@ -83,18 +83,20 @@
             <h3>
                 {{moment date 'H:mm'}} | {{title}}
                 {{#if cancelled}}
-                <span class="label label-important">מבוטל</span>
-                {{#if canEdit}}<span class="restore-event">&times;</span>{{/if}}
+                <span class="label label-important">מבוטל {{#if canEdit}}<span class="action restore-event">&times;</span>{{/if}}</span>
                 {{/if}}
             </h3>
         </div>
         {{#if currentUser}}
         <div class="details">
-            {{#if attendanceList}}
+            {{#if attending}}
             <strong>מי נרשם:</strong>
             <ol class="attendance-list">
                 {{#each attendanceList}}
                 <li>{{name}}</li>
+                {{/each}}
+                {{#each walkins}}
+                <li>{{name}} <span class="action remove-walkin">&times</span></li>
                 {{/each}}
             </ol>
             {{else}}
@@ -104,6 +106,10 @@
             {{#if canEdit }}
             <div class="admin-actions">
                 {{#unless cancelled}}
+                <div class="input-prepend">
+                    <input type="text" placeholder="שם" id="walkin-name" class="span2">
+                    <button type="button" class="btn btn-primary add-walkin">הוסף</button>
+                </div>
                 <button type="button" class="btn btn-danger cancel-event">בטל שיעור</button>
                 {{/unless}}
             </div>
