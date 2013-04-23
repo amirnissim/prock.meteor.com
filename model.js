@@ -98,16 +98,30 @@ Meteor.methods({
         Events.update(eventId, {$pull: {rsvps: {user: Meteor.userId()}}});
     },
     addWalkin: function(eventId, name){
-        if (!Meteor.user().username == ADMIN_USERNAME)
+        if (!(Meteor.user().username == ADMIN_USERNAME))
             throw new Meteor.Error(403, "You are not authorized to edit events");
         var event = Events.findOne(eventId);
         if (!event) {
             throw new Meteor.Error(404, "No such event");
         }
-        Events.update(eventId, {$addToSet: {walkins: {name: name}}});
+        Events.update(eventId, {$push: {walkins: {name: name}}});
+    },
+    removeWalkin: function(eventId, name){
+        if (!(Meteor.user().username == ADMIN_USERNAME))
+            throw new Meteor.Error(403, "You are not authorized to edit events");
+        var event = Events.findOne(eventId);
+        if (!event) {
+            throw new Meteor.Error(404, "No such event");
+        }
+
+        // there can more than one walking with 'name' --- remove only the first
+        // 'pull' removes all instances of the value, it is currently not possible to remove only the first
+        // see https://groups.google.com/forum/?fromgroups=#!topic/mongodb-user/B8Vz7qTX-t4
+        Events.update({_id: eventId, "walkins.name": name}, {"$unset": {"walkins.$": {"name": name}}});
+        Events.update({_id: eventId}, {"$pull": {"walkins": null}});
     },
     cancelEvent: function(eventId){
-        if (!Meteor.user().username == ADMIN_USERNAME)
+        if (!(Meteor.user().username == ADMIN_USERNAME))
             throw new Meteor.Error(403, "You are not authorized to edit events");
         var event = Events.findOne(eventId);
         if (!event) {
@@ -116,7 +130,7 @@ Meteor.methods({
         Events.update(eventId, {$set: {status: EVENT_STATUS.CANCELLED}});
     },
     restoreEvent: function(eventId){
-        if (!Meteor.user().username == ADMIN_USERNAME)
+        if (!(Meteor.user().username == ADMIN_USERNAME))
             throw new Meteor.Error(403, "You are not authorized to edit events");
         var event = Events.findOne(eventId);
         if (!event) {

@@ -78,7 +78,7 @@
 
 <template name="eventDetails">
     <div class="event well">
-        <input type="hidden" value="{{_id}}">
+        <input type="hidden" value="{{_id}}" class="event-id">
         <div class="title">
             <h3>
                 {{moment date 'H:mm'}} | {{title}}
@@ -96,7 +96,7 @@
                 <li>{{name}}</li>
                 {{/each}}
                 {{#each walkins}}
-                <li>{{name}} <span class="action remove-walkin">&times</span></li>
+                <li>{{name}} {{#if canEdit}}<span class="action remove-walkin"><i class="icon-remove-sign"></i></span>{{/if}}</li>
                 {{/each}}
             </ol>
             {{else}}

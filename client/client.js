@@ -95,14 +95,18 @@ Template.eventDetails.events({
     },
 
     // admin-actions
-    'click .add-walkin': function(){
-        var name = $("#walkin-name").val();
+    'click .add-walkin': function(event){
+        var name = $(event.target).parents(".event").find("#walkin-name").val();
         Meteor.call("addWalkin", this._id, name, function(error, result){
             if (error) alert(error.reason);
         });
     },
-    'click .remove-walkin': function(){
-        // TODO
+    'click .remove-walkin': function(event){
+        // hack since Meteor does not yet support accessing parent scope
+        var eventId = $(event.target).parents('.event').find('.event-id').val();
+        Meteor.call("removeWalkin", eventId, this.name, function(error, result){
+            if (error) alert(error.reason);
+        });
     },
     'click .cancel-event': function(){
         Meteor.call("cancelEvent", this._id, function(error, result){
