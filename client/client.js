@@ -62,7 +62,9 @@ Template.eventDetails.amGoing = function(){
     return _.contains(_.pluck(this.rsvps, "user"), Meteor.userId());
 };
 Template.eventDetails.isOpen = function(){
-    return this.rsvps.length < this.maxParticipants;
+    // if event hasn't started and there are spots left
+    return (this.rsvps.length < this.maxParticipants) &&
+        (this.date >= moment.utc().toDate());
 };
 Template.eventDetails.attending = function(){
     return (this.rsvps && this.rsvps.length) || (this.walkins && this.walkins.length);

@@ -76,8 +76,9 @@ Meteor.publish("directory", function () {
     return Meteor.users.find({}, {fields: {username:1, emails: 1, profile: 1}});
 });
 Meteor.publish("upcomingEvents", function () {
-    var start_date = moment().subtract("hours", 1).toDate(),
-        end_date = moment().add('days', DAYS_TO_PUBLISH_EVENTS_FOR).endOf("day").toDate();
+    // show event for one hour after it begins
+    var start_date = moment.utc().subtract("hours", 1).toDate(),
+        end_date = moment.utc().add('days', DAYS_TO_PUBLISH_EVENTS_FOR).endOf("day").toDate();
 
     return Events.find({'date': {'$gt': start_date, '$lt': end_date}});
 });
