@@ -34,16 +34,8 @@ var
         ]
     };
 
-Meteor.startup(function () {
-    // create admin user
-    var admin = Meteor.users.find({username: ADMIN_USERNAME}).count();
-    if (!admin){
-        Accounts.createUser({username: ADMIN_USERNAME, password: ADMIN_PASSWORD});
-        console.log("Admin user created");
-    }
-
-    // create events when the server starts
-    console.log("Creating events...\n=======");
+function createEvents () {
+    console.log("================ Creating events ================");
     for (var i = 0; i <= DAYS_TO_CREATE_EVENTS_FOR; i++) {
         var eventDay = moment().add('days', i);
 
@@ -69,6 +61,22 @@ Meteor.startup(function () {
             }
         });
     }
+}
+
+
+// once a day, create new events
+Meteor.setInterval(createEvents, 24 * 60 * 60 * 1000);
+
+
+Meteor.startup(function () {
+    // create admin user
+    var admin = Meteor.users.find({username: ADMIN_USERNAME}).count();
+    if (!admin){
+        Accounts.createUser({username: ADMIN_USERNAME, password: ADMIN_PASSWORD});
+        console.log("Admin user created");
+    }
+
+    createEvents();
 });
 
 
