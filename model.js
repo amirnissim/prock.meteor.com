@@ -77,6 +77,13 @@ validDate = function(d){
 
 
 Meteor.methods({
+    setPhoneNumber: function(phoneNumber) {
+        var currentUserId = Meteor.userId();
+        if (!currentUserId)
+            throw new Meteor.Error(403, "You must be logged in to do that");
+
+        Meteor.users.update(currentUserId, {$set: {'profile.phoneNumber': phoneNumber}});
+    },
     rsvp: function (eventId) {
         if (!Meteor.userId())
             throw new Meteor.Error(403, "You must be logged in to RSVP");
@@ -97,14 +104,14 @@ Meteor.methods({
         }
         Events.update(eventId, {$pull: {rsvps: {user: Meteor.userId()}}});
     },
-    addWalkin: function(eventId, name){
+    addWalkin: function(eventId, name, phoneNumber){
         if (!(Meteor.user().username == ADMIN_USERNAME))
             throw new Meteor.Error(403, "You are not authorized to edit events");
         var event = Events.findOne(eventId);
         if (!event) {
             throw new Meteor.Error(404, "No such event");
         }
-        Events.update(eventId, {$push: {walkins: {name: name}}});
+        Events.update(eventId, {$push: {walkins: {name: name, phoneNumber: phoneNumber}}});
     },
     removeWalkin: function(eventId, name){
         if (!(Meteor.user().username == ADMIN_USERNAME))

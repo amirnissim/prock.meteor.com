@@ -40,6 +40,8 @@ Template.adminTools.events = {
 };
 
 Template.upcomingEvents.upcomingEvents = function(){
+    // TODO: filter out cancelled events with no rsvps
+
     // group events by date
     var event_groups =  _.groupBy(Events.find().fetch(), function (event) {
         return moment(event.date).format("YY-M-D")
@@ -71,8 +73,10 @@ Template.eventDetails.attending = function(){
 };
 Template.eventDetails.attendanceList = function(){
     return _.map(_.pluck(this.rsvps, "user"), function(userId){
+        var user = Meteor.users.findOne(userId);
         return {
-            name: displayName(userId)
+            name: displayName(user),
+            phoneNumber: user.profile ? user.profile.phoneNumber : ''
         };
     })
 };
@@ -86,9 +90,23 @@ Template.eventDetails.cancelled = function(){
 Template.eventDetails.events({
     // user actions
     'click .rsvp': function(){
-        Meteor.call("rsvp", this._id, function(error, result){
-            if (error) alert(error.reason);
-        });
+        var phoneNumber = Meteor.user() && Meteor.user().profile &&
+                            Meteor.user().profile.phoneNumber;
+        if (phoneNumber) {
+            doClickRsvp(this._id);
+        }
+        // ask for the user's phone number
+        else {
+            var phoneNumber = prompt('בבקשה מלא מספר טלפון כדי שנוכל לעדכן אותך על שינויים', '');
+            if (phoneNumber) {
+                if (isValidPhoneNumber(phoneNumber)) {
+                    Meteor.call("setPhoneNumber", phoneNumber);  
+                    doClickRsvp(this._id);
+                } else {
+                    alert('מספר טלפון קצר מדי');
+                }
+            }
+        }
     },
     'click .cancel-rsvp': function(){
         Meteor.call("cancelRsvp", this._id, function(error, result){
@@ -99,7 +117,8 @@ Template.eventDetails.events({
     // admin-actions
     'click .add-walkin': function(event){
         var name = $(event.target).parents(".event").find("#walkin-name").val();
-        Meteor.call("addWalkin", this._id, name, function(error, result){
+        var phoneNumber = $(event.target).parents(".event").find("#walkin-phoneNumber").val();
+        Meteor.call("addWalkin", this._id, name, phoneNumber, function(error, result){
             if (error) alert(error.reason);
         });
     },
@@ -132,8 +151,20 @@ Template.eventDetails.helpers({
 ///////////////////////////////////////////////////////////////////////////////
 // Functions
 
-function displayName(userId) {
-    var user = Meteor.users.findOne(userId);
+function doClickRsvp(eventId) {
+    Meteor.call("rsvp", eventId, function(error, result){
+        if (error) alert(error.reason);
+    });
+}
+
+function isValidPhoneNumber(phoneNumber) {
+    if (phoneNumber && phoneNumber.length > 7) {
+        return true;
+    }
+    return false;
+}
+
+function displayName(user) {
     if (!user)
         return "משתמש לא מוכר";
 

@@ -93,10 +93,10 @@
             <strong>מי נרשם:</strong>
             <ol class="attendance-list">
                 {{#each attendanceList}}
-                <li>{{name}}</li>
+                <li>{{name}}{{#if canEdit }} {{phoneNumber}}{{/if}}</li>
                 {{/each}}
                 {{#each walkins}}
-                <li>{{name}} {{#if canEdit}}<span class="action remove-walkin"><i class="icon-remove-sign"></i></span>{{/if}}</li>
+                <li>{{name}} {{#if canEdit}} {{phoneNumber}} <span class="action remove-walkin"><i class="icon-remove-sign"></i></span>{{/if}}</li>
                 {{/each}}
             </ol>
             {{else}}
@@ -108,6 +108,7 @@
                 {{#unless cancelled}}
                 <div class="input-prepend">
                     <input type="text" placeholder="שם" id="walkin-name" class="span2">
+                    <input type="text" placeholder="טלפון" id="walkin-phoneNumber" class="span2">
                     <button type="button" class="btn btn-primary add-walkin">הוסף</button>
                 </div>
                 <button type="button" class="btn btn-danger cancel-event">בטל שיעור</button>
