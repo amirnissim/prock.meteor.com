@@ -93,10 +93,10 @@
             <strong>מי נרשם:</strong>
             <ol class="attendance-list">
                 {{#each attendanceList}}
-                <li>{{name}}{{#if canEdit }} {{phoneNumber}}{{/if}}</li>
+                <li>{{name}}{{#if canEdit }} <a href="tel:{{phoneNumber}}">{{phoneNumber}}</a>{{/if}}</li>
                 {{/each}}
                 {{#each walkins}}
-                <li>{{name}} {{#if canEdit}} {{phoneNumber}} <span class="action remove-walkin"><i class="icon-remove-sign"></i></span>{{/if}}</li>
+                <li>{{name}} {{#if canEdit}} <a href="tel:{{phoneNumber}}">{{phoneNumber}}</a> <span class="action remove-walkin"><i class="icon-remove-sign"></i></span>{{/if}}</li>
                 {{/each}}
             </ol>
             {{else}}
