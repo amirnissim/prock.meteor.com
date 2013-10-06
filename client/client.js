@@ -40,10 +40,16 @@ Template.adminTools.events = {
 };
 
 Template.upcomingEvents.upcomingEvents = function(){
-    // TODO: filter out cancelled events with no rsvps
+    // filter out cancelled events with no rsvps
+    var events = Events.find().fetch();
+    events = events.filter(function hideIt(event) {
+        return !(event.status === EVENT_STATUS.CANCELLED &&
+                    (!event.rsvps || event.rsvps.length === 0) &&
+                    (!event.walkins || event.walkins.length === 0));
+    });
 
     // group events by date
-    var event_groups =  _.groupBy(Events.find().fetch(), function (event) {
+    var event_groups =  _.groupBy(events, function (event) {
         return moment(event.date).format("YY-M-D")
     });
 
