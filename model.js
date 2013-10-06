@@ -52,8 +52,8 @@ createEvent = function(eventOptions){
 dstOffset = function(ilDate){
 
     var ISRAEL_DST_SCHEDULE = {
-        2013: [new Date(2013, 2, 29, 2), new Date(2013, 9, 6, 2)],
-        2014: [new Date(2014, 2, 28, 2), new Date(2014, 9, 5, 2)]
+        2013: [new Date(2013, 2, 29, 2), new Date(2013, 9, 27, 2)],
+        2014: [new Date(2014, 2, 28, 2), new Date(2014, 9, 26, 2)]
     };
 
     var year = ilDate.getFullYear(),
@@ -61,7 +61,7 @@ dstOffset = function(ilDate){
         dstEnd = ISRAEL_DST_SCHEDULE[year][1],
         offset;
 
-    if (dstStart <= ilDate && ilDate < dstEnd){
+    if (dstStart <= ilDate < dstEnd){
         offset = 3;  // DST ON
     } else {
         offset = 2;  // DST OFF
