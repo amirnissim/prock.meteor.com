@@ -71,7 +71,11 @@ Template.eventDetails.amGoing = function(){
 };
 Template.eventDetails.isOpen = function(){
     // if event hasn't started and there are spots left
-    return (this.rsvps.length < this.maxParticipants) &&
+    var participants = this.rsvps.length;
+    if (this.walkins) {
+        participants += this.walkins.length;
+    }
+    return (participants < this.maxParticipants) &&
         (this.date >= moment.utc().toDate());
 };
 Template.eventDetails.attending = function(){
