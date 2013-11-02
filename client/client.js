@@ -110,7 +110,7 @@ Template.eventDetails.events({
             var phoneNumber = prompt('בבקשה מלא מספר טלפון כדי שנוכל לעדכן אותך על שינויים', '');
             if (phoneNumber) {
                 if (isValidPhoneNumber(phoneNumber)) {
-                    Meteor.call("setPhoneNumber", phoneNumber);  
+                    Meteor.call("setPhoneNumber", phoneNumber);
                     doClickRsvp(this._id);
                 } else {
                     alert('מספר טלפון קצר מדי');

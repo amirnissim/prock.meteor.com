@@ -47,7 +47,8 @@ function createEvents () {
 
             // Schedule given in Israel time but we create dates in UTC
             var eventDate = moment.utc(eventDay.toArray().slice(0, 3).concat(entry.time));
-            eventDate = eventDate.subtract('hours', dstOffset(eventDate.toDate())).toDate();
+            var offset = dstOffset(eventDate.toDate());
+            eventDate = eventDate.subtract('hours', offset).toDate();
 
             // event already exists - do nothing
             if (Events.find({'date': eventDate}).count() > 0){
