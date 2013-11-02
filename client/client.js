@@ -36,6 +36,16 @@ Template.adminTools.events = {
         } else {
             alert("Please fill in all details");
         }
+    },
+
+    'click #DSTfix': function() {
+        var events = Events.find({'date': {'$gte': new Date(2013, 10, 4)}}).fetch();
+        for (var i=0, event; event = events[i++]; ) {
+            var date = event.date;
+            date.setHours(date.getHours() + 1);
+            console.log(date);
+            Events.update(event._id, {'$set': {'date': date}});
+        }
     }
 };
 
