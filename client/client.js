@@ -10,6 +10,11 @@ Accounts.ui.config({
 ///////////////////////////////////////////////////////////////////////////////
 // Main page
 
+UI.body.rendered = function() {
+    // defer likebox rendering
+    this.find('#likebox iframe').style.display = 'block';
+};
+
 Template.adminTools.canEdit = function(){
     return isAdmin();
 };

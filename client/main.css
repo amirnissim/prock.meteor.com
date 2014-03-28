@@ -33,6 +33,11 @@ body{
     width: 100% !important;
 }
 
+#likebox iframe {
+  /* lazy loaded, see client.js */
+  display: none;
+}
+
 #adminTools{
     direction: rtl;
 }
