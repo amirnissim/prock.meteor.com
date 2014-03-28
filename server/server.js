@@ -10,22 +10,22 @@ var
     ,EVENT_SCHEDULE = {  // Hours are in Israel Time
         // Sunday
         '0': [
-            { title: 'מבוגרים מתקדמים', time: [20, 0] },
+            { title: 'חוג בוגרים מתחילים', time: [20, 0] },
             { title: 'יוגה - איינגר', time: [20, 15] }
         ],
         // Monday
         '1': [
-            { title: 'שיעור הכרות חד פעמי', time: [19, 15] },
-            { title: 'מבוגרים מתחילים', time: [20, 0] },
+            { title: 'חוג היכרות', time: [19, 00] },
+            { title: 'חוג בוגרים מתקדמים', time: [20, 0] },
             { title: 'יוגה - איינגר', time: [20, 15] }
         ],
         // Tuesday
         '2': [
-            { title: 'מבוגרים מתחילים', time: [20, 0] }
+            { title: 'חוג נשים', time: [19, 0] }
         ],
         // Wednesday
         '3': [
-            { title: 'מבוגרים מתקדמים', time: [20, 0] }
+            { title: 'חוג בוגרים מתחילים', time: [20, 0] }
         ],
         // Thursday
         '4': [
