@@ -10,11 +10,11 @@
 <div id="content">
     <div id="toolbar">
         {{#if currentUser}}
-        {{loginButtons}}
+        {{>loginButtons}}
         {{else}}
         <div class="alert alert-error pagination-centered">
             הכנס לחשבון כדי להרשם לחוגים
-            {{loginButtons}}
+            {{>loginButtons}}
             <div class="clearfix"></div>
         </div>
         {{/if}}
