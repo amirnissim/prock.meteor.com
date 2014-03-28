@@ -1,0 +1,142 @@
+<head>
+    <title>פרפורמנס רוק - הרשמה לחוגים</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="images/favicon.png" type="image/x-icon">
+</head>
+
+<body>
+
+<div id="content">
+    <div id="toolbar">
+        {{#if currentUser}}
+        {{loginButtons}}
+        {{else}}
+        <div class="alert alert-error pagination-centered">
+            הכנס לחשבון כדי להרשם לחוגים
+            {{loginButtons}}
+            <div class="clearfix"></div>
+        </div>
+        {{/if}}
+
+    </div>
+
+    <div id="logo">
+        <a href="http://performancerock.co.il"><img src="images/logoHead.jpg"></a>
+        <h1>הרשמה לחוגים</h1>
+    </div>
+
+    <div id="likebox">
+        <iframe src="//www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2FPerformanceRock.ClimbingGym&amp;width=292&amp;height=395&amp;show_faces=false&amp;colorscheme=light&amp;stream=true&amp;border_color&amp;header=false&amp;appId=254729917994519" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:292px; height:395px;" allowTransparency="true"></iframe>
+    </div>
+
+    {{> adminTools }}
+
+    <div id="events">
+        {{> upcomingEvents}}
+    </div>
+</div>
+
+<div id="slogan" class="pagination-centered">
+    <h4>fuck work. GO CLIMBING</h4>
+</div>
+
+<div id="footer" class="pagination-centered muted">
+    <div>Made with <i class="icon-heart"></i> by Amir Nissim</div>
+    <div>Built with <a href="http://meteor.com">Meteor JS</a></div>
+    <div>ALPHA version</div>
+</div>
+
+</body>
+
+<template name="adminTools">
+    {{#if canEdit}}
+    <div id="adminTools" class="well">
+        <h3>הוסף חוג</h3>
+        <div><input type="text" id="newEventTitle" placeholder="שם"></div>
+        <div>
+            <input type="date" id="newEventDate" placeholder="תאריך">
+            <input type="time" id="newEventTime" placeholder="שעה">
+        </div>
+        <div>
+            <button class="btn btn-primary" id="createNewEvent">הוסף</button>
+        </div>
+    </div>
+    {{/if}}
+</template>
+
+<template name="upcomingEvents">
+    {{#each upcomingEvents}}
+    <div class="events-of-day">
+        <div class="header alert alert-success">
+            <h3>{{ title }}</h3>
+        </div>
+        {{#each event_list}}
+        {{> eventDetails }}}
+        {{/each}}
+    </div>
+    {{/each}}
+</template>
+
+<template name="eventDetails">
+    <div class="event well">
+        <input type="hidden" value="{{_id}}" class="event-id">
+        <div class="title">
+            <h3>
+                {{moment date 'H:mm'}} | {{title}}
+                {{#if cancelled}}
+                <span class="label label-important">מבוטל {{#if canEdit}}<span class="action restore-event">&times;</span>{{/if}}</span>
+                {{/if}}
+            </h3>
+        </div>
+        {{#if currentUser}}
+        <div class="details">
+            {{#if attending}}
+            <strong>מי נרשם:</strong>
+            <ol class="attendance-list">
+                {{#each attendanceList}}
+                <li>{{name}}{{#if canEdit }} <a href="tel:{{phoneNumber}}">{{phoneNumber}}</a>{{/if}}</li>
+                {{/each}}
+                {{#each walkins}}
+                <li>{{name}} {{#if canEdit}} <a href="tel:{{phoneNumber}}">{{phoneNumber}}</a> <span class="action remove-walkin"><i class="icon-remove-sign"></i></span>{{/if}}</li>
+                {{/each}}
+            </ol>
+            {{else}}
+            <strong>אף אחד לא נרשם עדיין</strong>
+            {{/if}}
+        </div>
+            {{#if canEdit }}
+            <div class="admin-actions">
+                {{#unless cancelled}}
+                <div class="input-prepend">
+                    <input type="text" placeholder="שם" id="walkin-name" class="span2">
+                    <input type="text" placeholder="טלפון" id="walkin-phoneNumber" class="span2">
+                    <button type="button" class="btn btn-primary add-walkin">הוסף</button>
+                </div>
+                <button type="button" class="btn btn-danger cancel-event">בטל שיעור</button>
+                {{/unless}}
+            </div>
+            {{else}}
+            <div class="user-actions">
+                {{#if amGoing}}
+                <input type="button" class="btn btn-success cancel-rsvp" value="ביטול הרשמה">
+                <div>
+                    <strong>בבקשה לבטל עד שעה מראש אם אינך מתכוונ/ת להגיע</strong>
+                </div>
+
+                {{else}}
+
+                {{#unless cancelled}}
+                {{#if isOpen}}
+                <input type="button" class="btn btn-primary rsvp" value="הרשם">
+                {{else}}
+                <strong>לא ניתן להרשם :(</strong>
+                {{/if}}
+                {{/unless}}
+
+                {{/if}}
+            </div>
+            {{/if}}
+        {{/if}}
+    </div>
+</template>
