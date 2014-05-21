@@ -53,10 +53,15 @@
     {{#if canEdit}}
     <div id="adminTools" class="well">
         <h3>הוסף חוג</h3>
-        <div><input type="text" id="newEventTitle" placeholder="שם"></div>
+        <div><input type="text" id="newEventTitle" placeholder="שם החוג"></div>
         <div>
+            <h5>תאריך ושעה</h5>
             <input type="date" id="newEventDate" placeholder="תאריך">
             <input type="time" id="newEventTime" placeholder="שעה">
+        </div>
+        <div>
+            <h5>כמות משתתפים</h5>
+            <input type="number" id="newEventMaxParticipants" value="{{MAX_PARTICIPANTS}}">
         </div>
         <div>
             <button class="btn btn-primary" id="createNewEvent">הוסף</button>

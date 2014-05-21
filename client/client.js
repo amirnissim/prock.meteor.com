@@ -18,11 +18,15 @@ UI.body.rendered = function() {
 Template.adminTools.canEdit = function(){
     return isAdmin();
 };
+Template.adminTools.MAX_PARTICIPANTS = function() {
+    return getMaxParticipants();
+};
 Template.adminTools.events = {
     'click #createNewEvent': function(){
         var eventDate = $("#newEventDate").val(),
             eventTime = $("#newEventTime").val(),
-            eventTitle = $("#newEventTitle").val();
+            eventTitle = $("#newEventTitle").val(),
+            maxParticipants = Number($("#newEventMaxParticipants").val());
 
         if (eventDate && eventTime && eventTitle){
             var utc = moment.utc(eventDate),
@@ -33,7 +37,8 @@ Template.adminTools.events = {
 
             var newEvent = createEvent({
                 title: eventTitle,
-                date: utc
+                date: utc,
+                maxParticipants: maxParticipants
             });
             if (!newEvent){
                 alert("oops, that didn't work");

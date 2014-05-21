@@ -28,6 +28,10 @@ var MAX_PARTICIPANTS = 9;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Methods
+getMaxParticipants = function () {
+    return MAX_PARTICIPANTS;
+};
+
 isAdmin = function(){
     return (Meteor.user() && Meteor.user().username == ADMIN_USERNAME);
 };
