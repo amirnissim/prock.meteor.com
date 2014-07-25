@@ -54,6 +54,7 @@
     <div id="adminTools" class="well">
         <h3>הוסף חוג</h3>
         <div><input type="text" id="newEventTitle" placeholder="שם החוג"></div>
+        <div><input type="text" id="newEventHost" placeholder="שם המדריך"></div>
         <div>
             <h5>תאריך ושעה</h5>
             <input type="date" id="newEventDate" placeholder="תאריך">
@@ -89,6 +90,7 @@
         <div class="title">
             <h3>
                 {{moment date 'H:mm'}} | {{title}}
+                {{#if host }} עם {{host}} {{/if}}
                 {{#if cancelled}}
                 <span class="label label-important">מבוטל {{#if canEdit}}<span class="action restore-event">&times;</span>{{/if}}</span>
                 {{/if}}
@@ -113,12 +115,24 @@
             {{#if canEdit }}
             <div class="admin-actions">
                 {{#unless cancelled}}
-                <div class="input-prepend">
-                    <input type="text" placeholder="שם" id="walkin-name" class="span2">
-                    <input type="text" placeholder="טלפון" id="walkin-phoneNumber" class="span2">
-                    <button type="button" class="btn btn-primary add-walkin">הוסף</button>
-                </div>
-                <button type="button" class="btn btn-danger cancel-event">בטל שיעור</button>
+                <p>
+                    הרשמה
+                    <div class="input-prepend">
+                        <input type="text" placeholder="שם" id="walkin-name" class="span2">
+                        <input type="text" placeholder="טלפון" id="walkin-phoneNumber" class="span2">
+                        <button type="button" class="btn btn-primary add-walkin">הוסף</button>
+                    </div>
+                </p>
+                <p>
+                    מדריך
+                    <div class="input-prepend">
+                        <input type="text" id="update-new-host" placeholder="{{host}}">
+                        <button type="button" class="btn btn-success update-event">שמירה</button>
+                    </div>
+                </p>
+                <p>
+                    <button type="button" class="btn btn-danger cancel-event">בטל שיעור</button>
+                </p>
                 {{/unless}}
             </div>
             {{else}}

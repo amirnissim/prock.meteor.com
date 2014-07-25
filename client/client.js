@@ -26,6 +26,7 @@ Template.adminTools.events = {
         var eventDate = $("#newEventDate").val(),
             eventTime = $("#newEventTime").val(),
             eventTitle = $("#newEventTitle").val(),
+            eventHost = $("#newEventHost").val(),
             maxParticipants = Number($("#newEventMaxParticipants").val());
 
         if (eventDate && eventTime && eventTitle){
@@ -37,6 +38,7 @@ Template.adminTools.events = {
 
             var newEvent = createEvent({
                 title: eventTitle,
+                host: eventHost,
                 date: utc,
                 maxParticipants: maxParticipants
             });
@@ -151,6 +153,15 @@ Template.eventDetails.events({
     },
     'click .cancel-event': function(){
         Meteor.call("cancelEvent", this._id, function(error, result){
+            if (error) alert(error.reason);
+        });
+    },
+    'click .update-event': function(event){
+        var props = {
+            host: $(event.target).parent().find('#update-new-host').val()
+        };
+
+        Meteor.call("updateEvent", this._id, props, function(error, result){
             if (error) alert(error.reason);
         });
     },

@@ -11,13 +11,13 @@ var
         // Sunday
         '0': [
             { title: 'חוג בוגרים מתחילים', time: [20, 0] },
-            { title: 'יוגה - איינגר', time: [20, 15] }
+            { title: 'יוגה - איינגר', time: [20, 15], host: 'גילי' }
         ],
         // Monday
         '1': [
             { title: 'חוג היכרות', time: [19, 00] },
             { title: 'חוג בוגרים מתקדמים', time: [20, 0] },
-            { title: 'יוגה - איינגר', time: [20, 15] }
+            { title: 'יוגה - איינגר', time: [20, 15], host: 'עינב' }
         ],
         // Tuesday
         '2': [
@@ -29,11 +29,11 @@ var
         ],
         // Thursday
         '4': [
-            { title: 'יוגה - איינגר', time: [19, 30] }
+            { title: 'יוגה - איינגר', time: [19, 30], host: 'עינב' }
         ],
         // Friday
         '5': [
-            { title: 'יוגה - מתקדמים', time: [9, 30] }
+            { title: 'יוגה - מתקדמים', time: [9, 30], host: 'יונית' }
         ]
     };
 
@@ -60,6 +60,7 @@ function createEvents () {
                 createEvent({
                     title: entry.title,
                     date: eventDate,
+                    host: entry.host,
                     maxParticipants: entry.maxParticipants
                 });
             }

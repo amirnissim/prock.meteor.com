@@ -4,6 +4,7 @@
 /*
  Each event is represented by a document in the Events collection:
  title: String
+ host: String
  date: JavaScript date
  status: EVENT_STATUS.cancelled if the event was cancelled
  rsvps: Array of objects like {user: userId}
@@ -44,6 +45,7 @@ createEvent = function(eventOptions){
     var event = {
         title: eventOptions.title,
         date: eventOptions.date,
+        host: eventOptions.host,
         maxParticipants: eventOptions.maxParticipants || MAX_PARTICIPANTS,
         rsvps: []
     };
@@ -141,6 +143,15 @@ Meteor.methods({
             throw new Meteor.Error(404, "No such event");
         }
         Events.update(eventId, {$set: {status: EVENT_STATUS.CANCELLED}});
+    },
+    updateEvent: function(eventId, props){
+        if (!(Meteor.user().username == ADMIN_USERNAME))
+            throw new Meteor.Error(403, "You are not authorized to edit events");
+        var event = Events.findOne(eventId);
+        if (!event) {
+            throw new Meteor.Error(404, "No such event");
+        }
+        Events.update(eventId, {$set: props});
     },
     restoreEvent: function(eventId){
         if (!(Meteor.user().username == ADMIN_USERNAME))
