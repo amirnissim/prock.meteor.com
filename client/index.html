@@ -8,33 +8,16 @@
 <body>
 
 <div id="content">
-    <div id="toolbar">
-        {{#if currentUser}}
-        {{>loginButtons}}
-        {{else}}
-        <div class="alert alert-error pagination-centered">
-            הכנס לחשבון כדי להרשם לחוגים
-            {{>loginButtons}}
-            <div class="clearfix"></div>
-        </div>
-        {{/if}}
-
-    </div>
 
     <div id="logo">
         <a href="http://performancerock.co.il"><img src="images/logoHead.jpg"></a>
-        <h1>הרשמה לחוגים</h1>
+        <h1>We'll be back soon</h1>
     </div>
 
     <div id="likebox">
         <iframe src="//www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2FPerformanceRock.ClimbingGym&amp;width=292&amp;height=395&amp;show_faces=false&amp;colorscheme=light&amp;stream=true&amp;border_color&amp;header=false&amp;appId=254729917994519" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:292px; height:395px;" allowTransparency="true"></iframe>
     </div>
 
-    {{> adminTools }}
-
-    <div id="events">
-        {{> upcomingEvents}}
-    </div>
 </div>
 
 <div id="slogan" class="pagination-centered">

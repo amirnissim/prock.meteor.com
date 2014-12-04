@@ -70,7 +70,7 @@ function createEvents () {
 
 
 // once a day, create new events
-Meteor.setInterval(createEvents, 24 * 60 * 60 * 1000);
+// Meteor.setInterval(createEvents, 24 * 60 * 60 * 1000);
 
 
 Meteor.startup(function () {
@@ -81,7 +81,7 @@ Meteor.startup(function () {
         console.log("Admin user created");
     }
 
-    createEvents();
+    // createEvents();
 });
 
 

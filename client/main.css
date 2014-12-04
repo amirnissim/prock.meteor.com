@@ -21,6 +21,10 @@ body{
     text-align: center;
     margin-bottom: 50px;
 }
+#logo a {
+  margin-bottom: 50px;
+  display: block;
+}
 
 #likebox{
     text-align: center;
