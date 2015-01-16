@@ -9,30 +9,27 @@ var
     ,EVENT_SCHEDULE = {  // Hours are in Israel Time
         // Sunday
         '0': [
-            { title: 'חוג בוגרים מתחילים', time: [20, 0] },
-            { title: 'יוגה - ויניאסה', time: [20, 15], host: 'דקלה' }
+            { title: 'יוגה לחיזוק וגמישות (אשטנגה)', time: [20, 00], host: 'יונית' }
         ],
         // Monday
         '1': [
-            { title: 'חוג היכרות', time: [19, 00] },
-            { title: 'חוג בוגרים מתקדמים', time: [20, 0] },
-            { title: 'יוגה - איינגר', time: [20, 15], host: 'עינב' }
+            { title: 'יוגה ויניאסה', time: [20, 00], host: 'דקלה' }
         ],
         // Tuesday
         '2': [
-            { title: 'חוג נשים', time: [19, 0] }
+            { title: 'יוגה אשטנגה', time: [18, 30], host: 'אמיר' }
         ],
         // Wednesday
         '3': [
-            { title: 'חוג בוגרים מתחילים', time: [20, 0] }
+
         ],
         // Thursday
         '4': [
-            { title: 'יוגה - איינגר', time: [19, 30], host: 'עינב' }
+            { title: 'יוגה איינגר', time: [20, 00], host: 'עינב' }
         ],
         // Friday
         '5': [
-            { title: 'יוגה - מתקדמים', time: [9, 30], host: 'יונית' }
+
         ]
     };
 
@@ -69,7 +66,7 @@ function createEvents () {
 
 
 // once a day, create new events
-// Meteor.setInterval(createEvents, 24 * 60 * 60 * 1000);
+Meteor.setInterval(createEvents, 24 * 60 * 60 * 1000);
 
 
 Meteor.startup(function () {
@@ -80,7 +77,7 @@ Meteor.startup(function () {
         console.log("Admin user created");
     }
 
-    // createEvents();
+    createEvents();
 });
 
 
