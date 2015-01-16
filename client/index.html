@@ -6,7 +6,10 @@
 </head>
 
 <body>
+ {{>body}}
+</body>
 
+<template name="body">
 <div id="content">
     <div id="toolbar">
         {{#if currentUser}}
@@ -18,23 +21,31 @@
             <div class="clearfix"></div>
         </div>
         {{/if}}
-
     </div>
 
     <div id="logo">
         <a href="http://performancerock.co.il"><img src="images/logoHead.jpg"></a>
         <h1>הרשמה לחוגים</h1>
+        {{#if isAdmin}}
+            <h2>ממשק ניהול</h2>
+        {{/if}}
     </div>
 
+    {{#if isAdmin}}
+        {{> adminTools }}
+    {{else}}
     <div id="likebox">
         <iframe src="//www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2FPerformanceRock.ClimbingGym&amp;width=292&amp;height=395&amp;show_faces=false&amp;colorscheme=light&amp;stream=true&amp;border_color&amp;header=false&amp;appId=254729917994519" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:292px; height:395px;" allowTransparency="true"></iframe>
     </div>
+    {{/if}}
 
-    {{> adminTools }}
-
-    <div id="events">
+    <div id="events" class="event-list">
         {{> upcomingEvents}}
     </div>
+
+    {{#if isAdmin}}
+        {{> eventHistory }}
+    {{/if}}
 </div>
 
 <div id="slogan" class="pagination-centered">
@@ -47,10 +58,9 @@
     <div>ALPHA version</div>
 </div>
 
-</body>
+</template>
 
 <template name="adminTools">
-    {{#if canEdit}}
     <div id="adminTools" class="well">
         <h3>הוסף חוג</h3>
         <div><input type="text" id="newEventTitle" placeholder="שם החוג"></div>
@@ -68,11 +78,10 @@
             <button class="btn btn-primary" id="createNewEvent">הוסף</button>
         </div>
     </div>
-    {{/if}}
 </template>
 
 <template name="upcomingEvents">
-    {{#each upcomingEvents}}
+    {{#each events}}
     <div class="events-of-day">
         <div class="header alert alert-success">
             <h3>{{ title }}</h3>
@@ -82,6 +91,48 @@
         {{/each}}
     </div>
     {{/each}}
+</template>
+
+<template name="eventHistory">
+    <h1>הסטוריה</h1>
+    <hr>
+    <div class="event-list">
+        {{ #each events }}
+            {{>historyDetails}}
+        {{ /each }}
+    </div>
+</template>
+
+<template name="historyDetails">
+    <div>
+        <div class="event well">
+            <input type="hidden" value="{{_id}}" class="event-id">
+            <div class="title">
+                <h3>
+                    {{moment date 'D/M/YY'}} | {{title}}
+                    {{#if host }} עם {{host}} {{/if}}
+                    {{#if cancelled}}
+                    <span class="label label-important">מבוטל</span>
+                    {{/if}}
+                </h3>
+            </div>
+            <div class="details">
+                {{#if attending}}
+                <strong>מי נרשם:</strong>
+                <ol class="attendance-list">
+                    {{#each attendanceList}}
+                    <li>{{name}} {{phoneNumber}}</li>
+                    {{/each}}
+                    {{#each walkins}}
+                    <li>{{name}} {{phoneNumber}}</li>
+                    {{/each}}
+                </ol>
+                {{else}}
+                <strong>אף אחד לא נרשם עדיין</strong>
+                {{/if}}
+            </div>
+        </div>
+    </div>
 </template>
 
 <template name="eventDetails">

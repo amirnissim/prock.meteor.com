@@ -1,5 +1,5 @@
 Meteor.subscribe("directory");
-Meteor.subscribe("upcomingEvents");
+Meteor.subscribe("recent-events");
 
 
 Accounts.ui.config({
@@ -13,6 +13,10 @@ Accounts.ui.config({
 UI.body.rendered = function() {
     // defer likebox rendering
     this.find('#likebox iframe').style.display = 'block';
+};
+
+Template.body.isAdmin = function() {
+    return isAdmin();
 };
 
 Template.adminTools.canEdit = function(){
@@ -51,9 +55,14 @@ Template.adminTools.events = {
     }
 };
 
-Template.upcomingEvents.upcomingEvents = function(){
+Template.upcomingEvents.events = function(){
+    // show event for one hour after it begins
+    var start_date = moment.utc().subtract("hours", 1).toDate(),
+        end_date = moment.utc().add('days', 7).endOf("day").toDate();
+
+    var events = Events.find({'date': {'$gt': start_date, '$lt': end_date}}).fetch();
+
     // filter out cancelled events with no rsvps
-    var events = Events.find().fetch();
     events = events.filter(function hideIt(event) {
         return !(event.status === EVENT_STATUS.CANCELLED &&
                     (!event.rsvps || event.rsvps.length === 0) &&
@@ -78,6 +87,13 @@ Template.upcomingEvents.upcomingEvents = function(){
     return _.sortBy(event_groups, function(o){ return o.date; });
 };
 
+Template.eventHistory.events = function() {
+    return Events.find(
+        {'date': {'$lt': moment.utc().toDate()} },
+        {'sort': {date: -1 } }
+    );
+};
+
 Template.eventDetails.amGoing = function(){
     return _.contains(_.pluck(this.rsvps, "user"), Meteor.userId());
 };
@@ -90,9 +106,17 @@ Template.eventDetails.isOpen = function(){
     return (participants < this.maxParticipants) &&
         (this.date >= moment.utc().toDate());
 };
+Template.eventDetails.canEdit = function(){
+    return isAdmin();
+};
+
+
+Template.historyDetails.attending =
 Template.eventDetails.attending = function(){
     return (this.rsvps && this.rsvps.length) || (this.walkins && this.walkins.length);
 };
+
+Template.historyDetails.attendanceList =
 Template.eventDetails.attendanceList = function(){
     return _.map(_.pluck(this.rsvps, "user"), function(userId){
         var user = Meteor.users.findOne(userId);
@@ -102,9 +126,8 @@ Template.eventDetails.attendanceList = function(){
         };
     })
 };
-Template.eventDetails.canEdit = function(){
-    return isAdmin();
-};
+
+Template.historyDetails.cancelled =
 Template.eventDetails.cancelled = function(){
     return this.status == EVENT_STATUS.CANCELLED;
 };
@@ -172,11 +195,16 @@ Template.eventDetails.events({
     }
 });
 
-Template.eventDetails.helpers({
+///////////////////////////////////////////////////////////////////////////////
+// Helpers
+var helpers = {
     moment: function(date, format) {
         return moment(date).format(format);
     }
-});
+};
+
+Template.eventDetails.helpers(helpers);
+Template.historyDetails.helpers(helpers);
 
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -4,7 +4,6 @@
 var
     ADMIN_PASSWORD = "admin"  // MUST CHANGE PASSWORD
 
-    ,DAYS_TO_PUBLISH_EVENTS_FOR = 7
     ,DAYS_TO_CREATE_EVENTS_FOR = 7
 
     ,EVENT_SCHEDULE = {  // Hours are in Israel Time
@@ -85,13 +84,16 @@ Meteor.startup(function () {
 });
 
 
+// see publishing events:
+// http://stackoverflow.com/questions/19826804/understanding-meteor-publish-subscribe
 Meteor.publish("directory", function () {
     return Meteor.users.find({}, {fields: {username:1, emails: 1, profile: 1}});
 });
-Meteor.publish("upcomingEvents", function () {
-    // show event for one hour after it begins
-    var start_date = moment.utc().subtract("hours", 1).toDate(),
-        end_date = moment.utc().add('days', DAYS_TO_PUBLISH_EVENTS_FOR).endOf("day").toDate();
-
-    return Events.find({'date': {'$gt': start_date, '$lt': end_date}});
+Meteor.publish("recent-events", function () {
+    var lastMonth = moment.utc().subtract(1, 'months').startOf('month').toDate();
+    return Events.find({
+        'date': {
+            '$gt': lastMonth
+        }
+    });
 });
