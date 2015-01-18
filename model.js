@@ -25,7 +25,7 @@ EVENT_STATUS = {
     CANCELLED: 'cancelled'
 };
 
-var MAX_PARTICIPANTS = 9;
+var MAX_PARTICIPANTS = 10;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Methods
