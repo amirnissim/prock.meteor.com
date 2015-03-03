@@ -17,7 +17,8 @@ var
         ],
         // Tuesday
         '2': [
-            { title: 'יוגה אשטנגה', time: [18, 30], host: 'אמיר' }
+            // cancelled
+            // { title: 'יוגה אשטנגה', time: [18, 30], host: 'אמיר' }
         ],
         // Wednesday
         '3': [
