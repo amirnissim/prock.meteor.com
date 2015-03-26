@@ -13,7 +13,8 @@ var
         ],
         // Monday
         '1': [
-            { title: 'יוגה ויניאסה', time: [20, 00], host: 'דקלה' }
+            // cancelled
+            // { title: 'יוגה ויניאסה', time: [20, 00], host: 'דקלה' }
         ],
         // Tuesday
         '2': [
