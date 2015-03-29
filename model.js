@@ -60,8 +60,8 @@ dstOffset = function(ilDate){
     var ISRAEL_DST_SCHEDULE = {
         2013: [new Date(2013, 2, 29, 2), new Date(2013, 9, 27, 2)],
         2014: [new Date(2014, 2, 28, 2), new Date(2014, 9, 26, 2)],
-        2015: [new Date(2014, 2, 27, 2), new Date(2014, 9, 25, 2)],
-        2016: [new Date(2014, 2, 25, 2), new Date(2014, 9, 30, 2)]
+        2015: [new Date(2015, 2, 27, 2), new Date(2015, 9, 25, 2)],
+        2016: [new Date(2016, 2, 25, 2), new Date(2016, 9, 30, 2)]
     };
 
     var year = ilDate.getFullYear(),
