@@ -1,7 +1,7 @@
 # get a password for remote connection
 alias getpass='meteor mongo --url prock.meteor.com | cut -d: -f3 | cut -d@ -f1'
 
-alias db-export='mongoexport --collection events --csv --out export.csv --fields title,date,status,rsvps,walkins `coffee parse-mongo-url.coffee`'
+alias db-export='mongoexport --collection events --type=csv --out prock_export.csv --fields _id,title,date,status,rsvps,walkins `coffee parse-mongo-url.coffee`'
 alias db-dump='mongodump `coffee parse-mongo-url.coffee`'
 
 # Mongo cheatsheet
